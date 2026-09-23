@@ -98,10 +98,10 @@ function Portfolio() {
       <div ref={cursorRef} className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
 
       <header className="site-header">
-        <button className="wordmark" onClick={() => navigateTo("top")} aria-label="Go to top">PRASHANT DAHAL<span>.</span></button>
+        <PortfolioButton className="wordmark" tone="ghost" onClick={() => navigateTo("top")} aria-label="Go to top">PRASHANT DAHAL<span>.</span></PortfolioButton>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {[["ABOUT", "about"], ["WORK", "work"], ["SKILLS", "skills"], ["CONTACT", "contact"]].map(([label, id]) => (
-            <button key={id} onClick={() => navigateTo(id)}>{label}</button>
+            <PortfolioButton key={id} tone="ghost" onClick={() => navigateTo(id)}>{label}</PortfolioButton>
           ))}
           <PortfolioButton tone="ghost" onClick={() => setMenuOpen(true)} aria-label="Open menu">
             MENU <Menu size={15} strokeWidth={1.5} />
@@ -117,7 +117,7 @@ function Portfolio() {
         <p className="eyebrow">NAVIGATION / 2026</p>
         <nav aria-label="Mobile navigation">
           {[["01", "ABOUT", "about"], ["02", "WORK", "work"], ["03", "SKILLS", "skills"], ["04", "CONTACT", "contact"]].map(([number, label, id]) => (
-            <button key={id} onClick={() => navigateTo(id)}><span>{number}</span>{label}<ArrowUpRight /></button>
+            <PortfolioButton key={id} tone="ghost" onClick={() => navigateTo(id)}><span>{number}</span>{label}<ArrowUpRight /></PortfolioButton>
           ))}
         </nav>
       </div>
@@ -135,7 +135,7 @@ function Portfolio() {
           </div>
           <div className="hero__footer">
             <span>BASED IN NEPAL</span><span className="status"><i /> AVAILABLE FOR OPPORTUNITIES</span>
-            <button onClick={() => navigateTo("about")}>SCROLL TO EXPLORE <ArrowDown size={15} /></button>
+            <PortfolioButton tone="ghost" onClick={() => navigateTo("about")}>SCROLL TO EXPLORE <ArrowDown size={15} /></PortfolioButton>
           </div>
         </section>
 

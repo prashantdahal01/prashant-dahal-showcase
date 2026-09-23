@@ -67,9 +67,9 @@ button { color: inherit; }
 @keyframes loader-line { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
 .site-header { position: fixed; inset: 0 0 auto; z-index: 40; height: 5.2rem; padding: 0 clamp(1.25rem, 3vw, 3.5rem); display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid color-mix(in oklab, var(--border) 65%, transparent); background: color-mix(in oklab, var(--background) 82%, transparent); backdrop-filter: blur(14px); }
-.wordmark { border: 0; background: none; font-family: var(--font-display); font-size: .96rem; cursor: pointer; letter-spacing: 0; }
+.wordmark { min-height: auto; border: 0; background: none; font-family: var(--font-display); font-size: .96rem; cursor: pointer; letter-spacing: 0; }
 .desktop-nav { display: flex; align-items: center; gap: clamp(1.4rem, 2.5vw, 3rem); }
-.desktop-nav > button:not(.portfolio-button) { border: 0; background: transparent; font-family: var(--font-mono); font-size: .67rem; cursor: pointer; transition: color .2s; }
+.desktop-nav > button { font-size: .67rem; transition: color .2s; }
 .desktop-nav > button:hover { color: var(--primary); }
 .portfolio-button { min-height: 2.7rem; display: inline-flex; align-items: center; justify-content: center; gap: .7rem; border: 1px solid var(--border); border-radius: 0; padding: .75rem 1rem; background: transparent; color: var(--foreground); font-family: var(--font-mono); font-size: .7rem; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s; }
 .portfolio-button:hover { border-color: var(--foreground); transform: translateY(-2px); }
@@ -83,7 +83,7 @@ button { color: inherit; }
 .menu-close { position: absolute; top: 1.5rem; right: 2rem; color: var(--primary-foreground); }
 .menu-overlay .eyebrow { margin: 4rem 0; font-family: var(--font-mono); font-size: .7rem; }
 .menu-overlay nav { border-top: 1px solid color-mix(in oklab, var(--primary-foreground) 30%, transparent); }
-.menu-overlay nav button { width: 100%; padding: 1.2rem 0; display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; border: 0; border-bottom: 1px solid color-mix(in oklab, var(--primary-foreground) 30%, transparent); background: transparent; text-align: left; font-family: var(--font-display); font-size: clamp(2rem, 8vw, 6rem); cursor: pointer; }
+.menu-overlay nav button { width: 100%; height: auto; padding: 1.2rem 0; display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; border: 0; border-bottom: 1px solid color-mix(in oklab, var(--primary-foreground) 30%, transparent); background: transparent; text-align: left; font-family: var(--font-display); font-size: clamp(2rem, 8vw, 6rem); cursor: pointer; }
 .menu-overlay nav button span { font-family: var(--font-mono); font-size: .7rem; }
 
 .hero { min-height: 100svh; padding: 8rem clamp(1.25rem, 3vw, 3.5rem) 2rem; display: flex; flex-direction: column; justify-content: space-between; }
@@ -98,7 +98,7 @@ button { color: inherit; }
 .hero__lower p { margin: 0; font-size: clamp(1rem, 1.4vw, 1.35rem); line-height: 1.55; }
 .hero__footer { padding-top: 1.15rem; border-top: 1px solid var(--border); align-items: center; }
 .status i { display: inline-block; width: .55rem; aspect-ratio: 1; margin-right: .5rem; border-radius: 50%; background: var(--primary); box-shadow: 0 0 1rem var(--primary); }
-.hero__footer button { display: flex; gap: .5rem; align-items: center; border: 0; background: transparent; color: var(--foreground); font: inherit; cursor: pointer; animation: float 1.8s ease-in-out infinite; }
+.hero__footer button { display: flex; min-height: auto; padding: 0; gap: .5rem; align-items: center; border: 0; background: transparent; color: var(--foreground); font: inherit; cursor: pointer; animation: float 1.8s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(.35rem); } }
 
 .section { padding: clamp(6rem, 12vw, 12rem) clamp(1.25rem, 3vw, 3.5rem); border-top: 1px solid var(--border); }
