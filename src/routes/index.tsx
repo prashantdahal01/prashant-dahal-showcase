@@ -101,7 +101,7 @@ function Portfolio() {
         <PortfolioButton className="wordmark" tone="ghost" onClick={() => navigateTo("top")} aria-label="Go to top">PRASHANT DAHAL<span>.</span></PortfolioButton>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {[["ABOUT", "about"], ["WORK", "work"], ["SKILLS", "skills"], ["CONTACT", "contact"]].map(([label, id]) => (
-            <PortfolioButton key={id} tone="ghost" onClick={() => navigateTo(id)}>{label}</PortfolioButton>
+            <PortfolioButton key={id} tone="ghost" onClick={() => id && navigateTo(id)}>{label}</PortfolioButton>
           ))}
           <PortfolioButton tone="ghost" onClick={() => setMenuOpen(true)} aria-label="Open menu">
             MENU <Menu size={15} strokeWidth={1.5} />
@@ -117,7 +117,7 @@ function Portfolio() {
         <p className="eyebrow">NAVIGATION / 2026</p>
         <nav aria-label="Mobile navigation">
           {[["01", "ABOUT", "about"], ["02", "WORK", "work"], ["03", "SKILLS", "skills"], ["04", "CONTACT", "contact"]].map(([number, label, id]) => (
-            <PortfolioButton key={id} tone="ghost" onClick={() => navigateTo(id)}><span>{number}</span>{label}<ArrowUpRight /></PortfolioButton>
+            <PortfolioButton key={id} tone="ghost" onClick={() => id && navigateTo(id)}><span>{number}</span>{label}<ArrowUpRight /></PortfolioButton>
           ))}
         </nav>
       </div>
