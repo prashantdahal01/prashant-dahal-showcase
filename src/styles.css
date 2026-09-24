@@ -80,7 +80,7 @@ button { color: inherit; }
 
 .menu-overlay { position: fixed; inset: 0; z-index: 70; padding: clamp(2rem, 6vw, 5rem); background: var(--primary); color: var(--primary-foreground); transform: translateY(-102%); visibility: hidden; transition: transform .65s cubic-bezier(.77,0,.18,1), visibility .65s; }
 .menu-overlay--open { transform: translateY(0); visibility: visible; }
-.menu-close { position: absolute; top: 1.5rem; right: 2rem; color: var(--primary-foreground); }
+.menu-close { position: absolute; top: 1.25rem; right: 1.25rem; z-index: 2; width: 3rem; min-height: 3rem; padding: 0; display: inline-flex; border: 1px solid color-mix(in oklab, var(--primary-foreground) 35%, transparent); color: var(--primary-foreground); }
 .menu-overlay .eyebrow { margin: 4rem 0; font-family: var(--font-mono); font-size: .7rem; }
 .menu-overlay nav { border-top: 1px solid color-mix(in oklab, var(--primary-foreground) 30%, transparent); }
 .menu-overlay nav button { width: 100%; height: auto; padding: 1.2rem 0; display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; border: 0; border-bottom: 1px solid color-mix(in oklab, var(--primary-foreground) 30%, transparent); background: transparent; text-align: left; font-family: var(--font-display); font-size: clamp(2rem, 8vw, 6rem); cursor: pointer; }
