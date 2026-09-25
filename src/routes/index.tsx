@@ -25,6 +25,22 @@ export const Route = createFileRoute("/")({
   component: Portfolio,
 });
 
+const GITHUB_URL = "https://github.com/prashantdahal01";
+const LINKEDIN_URL = "https://www.linkedin.com/in/prashant-dahal-ba7564234/";
+const EMAIL = "prashantdahal27@gmail.com";
+// Drop the PDF at public/Prashant-Dahal-Resume.pdf — the button activates automatically.
+const RESUME_PATH = "/Prashant-Dahal-Resume.pdf";
+// Paste your Formspree endpoint here, e.g. "https://formspree.io/f/abcdwxyz".
+const FORMSPREE_ENDPOINT = "";
+const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
+
+function ResumeButton({ available, solid }: { available: boolean; solid?: boolean }) {
+  if (!available) {
+    return <span className="portfolio-link portfolio-link--disabled" title="Resume coming soon" aria-disabled="true">DOWNLOAD CV · SOON</span>;
+  }
+  return <a className={`portfolio-link ${solid ? "portfolio-link--solid" : ""}`} href={RESUME_PATH} download>DOWNLOAD CV <ArrowDown size={14} /></a>;
+}
+
 const technologies = [
   "React", "JavaScript", "HTML", "CSS", "Node.js", "Express.js", "MongoDB",
   "Mongoose", "Git", "GitHub", "REST APIs", "Vite", "Tailwind CSS",
@@ -41,7 +57,15 @@ const capabilities = [
 function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [resumeAvailable, setResumeAvailable] = useState(false);
+  const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const cursorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch(RESUME_PATH, { method: "HEAD" })
+      .then((r) => setResumeAvailable(r.ok && (r.headers.get("content-type") ?? "").includes("pdf")))
+      .catch(() => setResumeAvailable(false));
+  }, []);
 
   useEffect(() => {
     const timer = window.setTimeout(() => setLoading(false), 1450);
@@ -75,15 +99,32 @@ function Portfolio() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const sendMessage = (event: FormEvent<HTMLFormElement>) => {
+  const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const name = String(data.get("name") ?? "");
-    const email = String(data.get("email") ?? "");
-    const message = String(data.get("message") ?? "");
-    const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
-    const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nEmail: ${email}`);
-    window.location.href = `mailto:prashantdahal27@gmail.com?subject=${subject}&body=${body}`;
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim().slice(0, 100);
+    const email = String(data.get("email") ?? "").trim().slice(0, 255);
+    const message = String(data.get("message") ?? "").trim().slice(0, 2000);
+    if (!FORMSPREE_ENDPOINT) {
+      const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
+      const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nEmail: ${email}`);
+      window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+      return;
+    }
+    setFormState("sending");
+    try {
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (!res.ok) throw new Error();
+      form.reset();
+      setFormState("sent");
+    } catch {
+      setFormState("error");
+    }
   };
 
   return (
