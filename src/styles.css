@@ -243,3 +243,7 @@ body:has([data-cursor="view"]:hover) .custom-cursor span { display: block; }
   [data-reveal] { opacity: 1; transform: none; }
   .loader { display: none; }
 }
+.hero__cta { margin-top: 1.5rem; display: flex; gap: .75rem; flex-wrap: wrap; }
+.about-copy .contact-actions { margin-top: 2rem; }
+.project__soon, .form-status { display: block; width: 100%; margin-top: .75rem; font-family: "IBM Plex Mono", monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; opacity: .65; }
+.form-status:empty { display: none; }
