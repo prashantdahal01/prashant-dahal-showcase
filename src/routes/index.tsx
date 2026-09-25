@@ -31,7 +31,7 @@ const EMAIL = "prashantdahal27@gmail.com";
 // Drop the PDF at public/Prashant-Dahal-Resume.pdf — the button activates automatically.
 const RESUME_PATH = "/Prashant-Dahal-Resume.pdf";
 // Paste your Formspree endpoint here, e.g. "https://formspree.io/f/abcdwxyz".
-const FORMSPREE_ENDPOINT = "";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xrpbkbwk";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 function ResumeButton({ available, solid }: { available: boolean; solid?: boolean }) {
@@ -209,7 +209,7 @@ function Portfolio() {
         <section id="work" className="section work-section">
           <div className="section-index"><span>03</span><span>FEATURED PROJECTS</span></div>
           <div className="section-heading" data-reveal><h2>SELECTED<br /><em>WORK</em><span className="accent-dot">.</span></h2><p>Real projects. Thoughtful systems.<br />Built to solve practical problems.</p></div>
-          <Project number="01" title="BUS BOOKING SYSTEM" category="FULL-STACK WEB APPLICATION" description="A MERN-based bus ticket booking platform designed for customers, operators and administrators. Includes route and schedule search, seat selection, temporary seat locking, booking management, online payment flow and e-ticket generation." technologies={["React", "Node.js", "Express.js", "MongoDB", "Mongoose"]} image={busImage} alt="Abstract map, bus and seat layout artwork representing a bus booking platform" />
+          <Project number="01" title="BUS BOOKING SYSTEM" category="FULL-STACK WEB APPLICATION" description="A MERN-based bus ticket booking platform designed for customers, operators and administrators. Includes route and schedule search, seat selection, temporary seat locking, booking management, online payment flow and e-ticket generation." technologies={["React", "Node.js", "Express.js", "MongoDB", "Mongoose"]} liveUrl="https://smartbusbooking-1.onrender.com/" repoUrl="https://github.com/prashantdahal01/smartbusbooking" image={busImage} alt="Abstract map, bus and seat layout artwork representing a bus booking platform" />
           <Project number="02" title="PERSONAL PORTFOLIO" category="WEB DEVELOPMENT" description="A modern personal portfolio designed to showcase my development work, technical skills and projects through an interactive user experience." technologies={["React", "JavaScript", "CSS", "Vite"]} image={portfolioImage} alt="Abstract browser and typographic artwork representing a creative developer portfolio" reverse />
         </section>
 
@@ -268,9 +268,9 @@ function Portfolio() {
   );
 }
 
-type ProjectProps = { number: string; title: string; category: string; description: string; technologies: string[]; image: string; alt: string; reverse?: boolean };
+type ProjectProps = { number: string; title: string; category: string; description: string; technologies: string[]; image: string; alt: string; reverse?: boolean; liveUrl?: string; repoUrl?: string };
 
-function Project({ number, title, category, description, technologies, image, alt, reverse }: ProjectProps) {
+function Project({ number, title, category, description, technologies, image, alt, reverse, liveUrl, repoUrl }: ProjectProps) {
   return (
     <article className={`project ${reverse ? "project--reverse" : ""}`} data-reveal data-cursor="view">
       <div className="project__image"><img src={image} alt={alt} loading="lazy" width={1600} height={1104} /></div>
@@ -278,7 +278,7 @@ function Project({ number, title, category, description, technologies, image, al
         <div className="project__meta"><span>PROJECT / {number}</span><span>{category}</span></div>
         <h3>{title}</h3><p>{description}</p>
         <ul aria-label="Technologies used">{technologies.map((technology) => <li key={technology}>{technology}</li>)}</ul>
-        <div className="project__actions"><span className="portfolio-link portfolio-link--disabled" aria-disabled="true">VIEW PROJECT</span><span className="portfolio-link portfolio-link--disabled" aria-disabled="true">GITHUB</span><small className="project__soon">Live demo &amp; repo coming soon</small></div>
+        <div className="project__actions">{liveUrl ? <a className="portfolio-link portfolio-link--solid" href={liveUrl} {...ext}>VIEW PROJECT <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">VIEW PROJECT</span>}{repoUrl ? <a className="portfolio-link" href={repoUrl} {...ext}>GITHUB <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">GITHUB</span>}{!liveUrl && !repoUrl && <small className="project__soon">Live demo &amp; repo coming soon</small>}</div>
       </div>
     </article>
   );
