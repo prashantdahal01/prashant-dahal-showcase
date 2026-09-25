@@ -173,6 +173,7 @@ function Portfolio() {
           <div className="hero__lower">
             <div className="hero__role"><span>FULL-STACK</span><span>DEVELOPER</span></div>
             <p>I build modern web applications that combine clean interfaces, practical functionality, and reliable backend systems.</p>
+            <div className="hero__cta"><ResumeButton available={resumeAvailable} /></div>
           </div>
           <div className="hero__footer">
             <span>BASED IN NEPAL</span><span className="status"><i /> AVAILABLE FOR OPPORTUNITIES</span>
@@ -190,6 +191,7 @@ function Portfolio() {
                 <p>I enjoy turning ideas into complete digital products — from frontend interfaces and user experiences to backend APIs, databases and authentication.</p>
                 <p>I&apos;m currently focused on strengthening my MERN stack development skills and building real-world projects.</p>
               </div>
+              <div className="contact-actions"><ResumeButton available={resumeAvailable} solid /><a className="portfolio-link" href={GITHUB_URL} {...ext}>GITHUB <ArrowUpRight /></a></div>
             </div>
             <div className="orbit" aria-hidden="true" data-reveal><span className="orbit__core">PD</span><i /><i /><i /></div>
           </div>
@@ -241,15 +243,17 @@ function Portfolio() {
               <div><span>LOCATION</span><p>Nepal</p></div>
               <div className="contact-actions">
                 <a className="portfolio-link portfolio-link--solid" href="mailto:prashantdahal27@gmail.com">EMAIL ME <ArrowUpRight /></a>
-                <span className="portfolio-link portfolio-link--disabled" title="Profile link not provided">GITHUB</span>
-                <span className="portfolio-link portfolio-link--disabled" title="Profile link not provided">LINKEDIN</span>
+                <a className="portfolio-link" href={GITHUB_URL} {...ext}>GITHUB <ArrowUpRight /></a>
+                <a className="portfolio-link" href={LINKEDIN_URL} {...ext}>LINKEDIN <ArrowUpRight /></a>
+                <ResumeButton available={resumeAvailable} />
               </div>
             </div>
             <form onSubmit={sendMessage}>
               <label><span>YOUR NAME</span><input name="name" type="text" autoComplete="name" placeholder="Enter your name" required /></label>
               <label><span>YOUR EMAIL</span><input name="email" type="email" autoComplete="email" placeholder="Enter your email" required /></label>
               <label><span>YOUR MESSAGE</span><textarea name="message" rows={4} placeholder="Tell me about your idea" required /></label>
-              <PortfolioButton type="submit" tone="solid">SEND MESSAGE <Send size={16} /></PortfolioButton>
+              <PortfolioButton type="submit" tone="solid" disabled={formState === "sending"}>{formState === "sending" ? "SENDING…" : "SEND MESSAGE"} <Send size={16} /></PortfolioButton>
+              <p className="form-status" role="status" aria-live="polite">{formState === "sent" ? "Thanks — your message was sent." : formState === "error" ? `Something went wrong. Please email ${EMAIL} directly.` : ""}</p>
             </form>
           </div>
         </section>
@@ -258,7 +262,7 @@ function Portfolio() {
       <footer>
         <div><strong>PRASHANT DAHAL</strong><span>FULL-STACK DEVELOPER</span></div>
         <p>© 2026 PRASHANT DAHAL</p>
-        <div className="footer-links"><span>GITHUB</span><span>LINKEDIN</span><a href="mailto:prashantdahal27@gmail.com">EMAIL</a></div>
+        <div className="footer-links"><a href={GITHUB_URL} {...ext}>GITHUB</a><a href={LINKEDIN_URL} {...ext}>LINKEDIN</a><a href="mailto:prashantdahal27@gmail.com">EMAIL</a></div>
       </footer>
     </div>
   );
@@ -274,7 +278,7 @@ function Project({ number, title, category, description, technologies, image, al
         <div className="project__meta"><span>PROJECT / {number}</span><span>{category}</span></div>
         <h3>{title}</h3><p>{description}</p>
         <ul aria-label="Technologies used">{technologies.map((technology) => <li key={technology}>{technology}</li>)}</ul>
-        <div className="project__actions"><span className="portfolio-link portfolio-link--disabled" title="Project URL not provided">VIEW PROJECT</span><span className="portfolio-link portfolio-link--disabled" title="Repository URL not provided">GITHUB</span></div>
+        <div className="project__actions"><span className="portfolio-link portfolio-link--disabled" aria-disabled="true">VIEW PROJECT</span><span className="portfolio-link portfolio-link--disabled" aria-disabled="true">GITHUB</span><small className="project__soon">Live demo &amp; repo coming soon</small></div>
       </div>
     </article>
   );
