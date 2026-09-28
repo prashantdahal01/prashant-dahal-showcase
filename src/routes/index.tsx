@@ -28,9 +28,7 @@ export const Route = createFileRoute("/")({
 const GITHUB_URL = "https://github.com/prashantdahal01";
 const LINKEDIN_URL = "https://www.linkedin.com/in/prashant-dahal-ba7564234/";
 const EMAIL = "prashantdahal27@gmail.com";
-// Drop the PDF at public/Prashant-Dahal-Resume.pdf — the button activates automatically.
 const RESUME_PATH = "/Prashant-Dahal-Resume.pdf";
-// Paste your Formspree endpoint here, e.g. "https://formspree.io/f/abcdwxyz".
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xrpbkbwk";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
@@ -60,6 +58,7 @@ function Portfolio() {
   const [resumeAvailable, setResumeAvailable] = useState(false);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const cursorRef = useRef<HTMLDivElement>(null);
+  const heroBackdropRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch(RESUME_PATH, { method: "HEAD" })
@@ -68,24 +67,32 @@ function Portfolio() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.classList.add("js-enabled");
     const timer = window.setTimeout(() => setLoading(false), 1450);
-    const elements = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("is-visible")),
-      { threshold: 0.12 },
-    );
-    elements.forEach((element) => observer.observe(element));
 
     const moveCursor = (event: PointerEvent) => {
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
       }
     };
+    let frame = 0;
+    const moveHeroBackdrop = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (heroBackdropRef.current) {
+          const offset = Math.min(window.scrollY * 0.16, 150);
+          heroBackdropRef.current.style.transform = `translate3d(0, ${offset}px, 0) scale(1.08)`;
+        }
+      });
+    };
     window.addEventListener("pointermove", moveCursor);
+    window.addEventListener("scroll", moveHeroBackdrop, { passive: true });
     return () => {
+      document.documentElement.classList.remove("js-enabled");
       window.clearTimeout(timer);
-      observer.disconnect();
+      cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", moveCursor);
+      window.removeEventListener("scroll", moveHeroBackdrop);
     };
   }, []);
 
@@ -165,6 +172,7 @@ function Portfolio() {
 
       <main id="main">
         <section id="top" className="hero" aria-labelledby="hero-title">
+          <div ref={heroBackdropRef} className="hero__backdrop" aria-hidden="true" style={{ backgroundImage: `url(${portfolioImage})` }} />
           <div className="hero__kicker"><span>PORTFOLIO / 2026</span><span>FULL-STACK DEVELOPMENT</span></div>
           <h1 id="hero-title" className="hero__title">
             <span className="hero-line">PRASHANT</span>
@@ -248,7 +256,7 @@ function Portfolio() {
                 <ResumeButton available={resumeAvailable} />
               </div>
             </div>
-            <form onSubmit={sendMessage}>
+            <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={sendMessage}>
               <label><span>YOUR NAME</span><input name="name" type="text" autoComplete="name" placeholder="Enter your name" required /></label>
               <label><span>YOUR EMAIL</span><input name="email" type="email" autoComplete="email" placeholder="Enter your email" required /></label>
               <label><span>YOUR MESSAGE</span><textarea name="message" rows={4} placeholder="Tell me about your idea" required /></label>

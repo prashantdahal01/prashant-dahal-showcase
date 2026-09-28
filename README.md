@@ -390,18 +390,6 @@ Do not add fake clients.
 Do not add fake work experience.
 Do not copy Curtis Designr's text, images, branding, or exact layout.
 
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://prashant-dahal-showcase.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/0326e32e-f31b-4397-909d-94a2226379d2).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
