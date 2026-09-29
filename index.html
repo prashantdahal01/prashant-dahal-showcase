@@ -3,17 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1d1e20" />
     <meta name="description" content="Portfolio of Prashant Dahal, a BCA graduate and junior full-stack developer from Nepal focused on web development, APIs, testing and technical support." />
     <meta property="og:title" content="Prashant Dahal - Software & Web Developer" />
     <meta property="og:description" content="A portfolio covering React, Node.js, APIs, databases, testing and technical problem solving." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.prashant-dahal.com.np/" />
+    <meta property="og:image" content="https://www.prashant-dahal.com.np/profile-favicon.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://www.prashant-dahal.com.np/profile-favicon.png" />
     <link rel="icon" href="/profile-favicon.png" type="image/png" />
+    <link rel="canonical" href="https://www.prashant-dahal.com.np/" />
+    <style>
+      :root { color-scheme: dark; background: #1d1e20; }
+      html, body { margin: 0; min-height: 100%; background: #1d1e20; color: #f1f0e9; }
+      .static-first-paint { min-height: 100svh; padding: 7rem 3.5vw 2rem; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; font-family: Georgia, serif; }
+      .static-first-paint__name { margin: auto 0; font: 900 clamp(4rem, 13.8vw, 13.5rem)/.75 Georgia, serif; letter-spacing: 0; }
+      .static-first-paint__name span { display: block; }
+      .static-first-paint__name span:last-child { padding-left: 14vw; }
+      .static-first-paint__name i { color: #b5f500; font-style: normal; }
+      @media (max-width: 480px) { .static-first-paint { padding: 6rem 1rem 1.5rem; } .static-first-paint__name { font-size: clamp(3.5rem, 20vw, 6.2rem); } .static-first-paint__name span:last-child { padding-left: 0; } }
+    </style>
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"Person","name":"Prashant Dahal","url":"https://www.prashant-dahal.com.np/","jobTitle":"Full Stack Developer","sameAs":["https://github.com/prashantdahal01","https://www.linkedin.com/in/prashant-dahal-ba7564234/"]}
+    </script>
     <title>Prashant Dahal - Software & Web Developer</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><main class="static-first-paint" aria-hidden="true"><span>PORTFOLIO / 2026</span><h1 class="static-first-paint__name"><span>PRASHANT</span><span>DAHAL<i>.</i></span></h1><span>FULL-STACK DEVELOPER · NEPAL</span></main></div>
     <script type="module" src="/src/client.tsx"></script>
   </body>
 </html>

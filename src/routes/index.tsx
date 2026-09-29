@@ -18,9 +18,11 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.prashant-dahal.com.np/" },
+      { property: "og:image", content: "https://www.prashant-dahal.com.np/profile-favicon.png" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://www.prashant-dahal.com.np/profile-favicon.png" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://www.prashant-dahal.com.np/" }],
   }),
   component: Portfolio,
 });
@@ -82,8 +84,13 @@ function Portfolio() {
   useEffect(() => {
     document.documentElement.classList.add("js-enabled");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timer = reducedMotion ? undefined : window.setTimeout(() => setLoading(false), 1900);
-    if (reducedMotion) setLoading(false);
+    const introSeen = window.sessionStorage.getItem("pd-intro-seen") === "true";
+    const finishIntro = () => {
+      window.sessionStorage.setItem("pd-intro-seen", "true");
+      setLoading(false);
+    };
+    const timer = reducedMotion || introSeen ? undefined : window.setTimeout(finishIntro, 1900);
+    if (reducedMotion || introSeen) setLoading(false);
 
     const moveCursor = (event: PointerEvent) => {
       if (cursorRef.current) {
@@ -111,7 +118,10 @@ function Portfolio() {
     };
   }, []);
 
-  const skipIntro = () => setLoading(false);
+  const skipIntro = () => {
+    window.sessionStorage.setItem("pd-intro-seen", "true");
+    setLoading(false);
+  };
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -323,7 +333,7 @@ function Project({ number, title, category, description, technologies, features,
         <h3>{title}</h3><p>{description}</p>
         <ul aria-label="Technologies used">{technologies.map((technology) => <li key={technology}>{technology}</li>)}</ul>
         <ul className="project__features" aria-label="Key features">{features.map((feature) => <li key={feature}>{feature}</li>)}</ul>
-        <div className="project__actions">{liveUrl ? <a className="portfolio-link portfolio-link--solid" href={liveUrl} {...ext}>VIEW PROJECT <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">VIEW PROJECT</span>}{repoUrl ? <a className="portfolio-link" href={repoUrl} {...ext}>GITHUB <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">GITHUB</span>}{!liveUrl && !repoUrl && <small className="project__soon">Live demo &amp; repo coming soon</small>}</div>
+        <div className="project__actions">{liveUrl ? <a className="portfolio-link portfolio-link--solid" href={liveUrl} aria-label={`View live demo for ${title}`} {...ext}>VIEW PROJECT <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">VIEW PROJECT</span>}{repoUrl ? <a className="portfolio-link" href={repoUrl} aria-label={`View GitHub repository for ${title}`} {...ext}>GITHUB <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">GITHUB</span>}{!liveUrl && !repoUrl && <small className="project__soon">Live demo &amp; repo coming soon</small>}</div>
       </div>
     </article>
   );

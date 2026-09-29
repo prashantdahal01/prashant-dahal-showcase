@@ -8,5 +8,6 @@ export default defineConfig({
   build: {
     outDir: "dist-pages",
     emptyOutDir: true,
+    target: "es2020",
   },
 });
