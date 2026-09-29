@@ -119,6 +119,7 @@ function Portfolio() {
 
   const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (formState === "sending") return;
     const form = event.currentTarget;
     const data = new FormData(form);
     const name = String(data.get("name") ?? "").trim().slice(0, 100);
@@ -131,17 +132,22 @@ function Portfolio() {
       return;
     }
     setFormState("sending");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 12000);
     try {
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
         headers: { Accept: "application/json", "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, message }),
+        signal: controller.signal,
       });
       if (!res.ok) throw new Error();
       form.reset();
       setFormState("sent");
     } catch {
       setFormState("error");
+    } finally {
+      window.clearTimeout(timeout);
     }
   };
 
