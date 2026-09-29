@@ -274,7 +274,8 @@ body:has([data-cursor="view"]:hover) .custom-cursor span { display: block; }
   .services-grid article { min-height: auto; padding: 1.25rem; }
   .services-grid h3 { margin-top: 1.5rem; }
   .timeline article, .capability-list article { grid-template-columns: 2rem 1fr; }
-  .timeline article small, .capability-list article svg { display: none; }
+  .timeline article small { display: block; grid-column: 2; }
+  .capability-list article svg { display: none; }
   .timeline article p, .capability-list article p { grid-column: 2; }
 }
 
