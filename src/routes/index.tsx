@@ -28,15 +28,12 @@ export const Route = createFileRoute("/")({
 const GITHUB_URL = "https://github.com/prashantdahal01";
 const LINKEDIN_URL = "https://www.linkedin.com/in/prashant-dahal-ba7564234/";
 const EMAIL = "prashantdahal27@gmail.com";
-const RESUME_PATH = "/Prashant-Dahal-Resume.pdf";
+const RESUME_PATH = "/assets/Prashant_Dahal_CV.pdf";
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xrpbkbwk";
 const PHONE = "Phone available on request";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
-function ResumeButton({ available, solid }: { available: boolean; solid?: boolean }) {
-  if (!available) {
-    return <span className="portfolio-link portfolio-link--disabled" title="Resume coming soon" aria-disabled="true">DOWNLOAD CV · SOON</span>;
-  }
+function ResumeButton({ solid }: { solid?: boolean }) {
   return <a className={`portfolio-link ${solid ? "portfolio-link--solid" : ""}`} href={RESUME_PATH} download>DOWNLOAD CV <ArrowDown size={14} /></a>;
 }
 
@@ -76,16 +73,9 @@ const capabilities = [
 function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [resumeAvailable, setResumeAvailable] = useState(false);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const cursorRef = useRef<HTMLDivElement>(null);
   const heroBackdropRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    fetch(RESUME_PATH, { method: "HEAD" })
-      .then((r) => setResumeAvailable(r.ok && (r.headers.get("content-type") ?? "").includes("pdf")))
-      .catch(() => setResumeAvailable(false));
-  }, []);
 
   useEffect(() => {
     document.documentElement.classList.add("js-enabled");
@@ -205,7 +195,7 @@ function Portfolio() {
               <p>I build modern web applications and solve practical technical problems across front-end, back-end, databases, APIs, testing and support.</p>
               <div className="hero__roles" aria-label="Professional focus areas">{professionalRoles.slice(0, 3).map((role) => <span key={role}>{role}</span>)}</div>
             </div>
-            <div className="hero__cta"><PortfolioButton tone="solid" onClick={() => navigateTo("work")}>VIEW PROJECTS <ArrowUpRight size={15} /></PortfolioButton><ResumeButton available={resumeAvailable} /><PortfolioButton tone="ghost" onClick={() => navigateTo("contact")}>CONTACT ME <ArrowUpRight size={15} /></PortfolioButton></div>
+            <div className="hero__cta"><PortfolioButton tone="solid" onClick={() => navigateTo("work")}>VIEW PROJECTS <ArrowUpRight size={15} /></PortfolioButton><ResumeButton /><PortfolioButton tone="ghost" onClick={() => navigateTo("contact")}>CONTACT ME <ArrowUpRight size={15} /></PortfolioButton></div>
           </div>
           <div className="hero__footer">
             <span>BASED IN NEPAL</span><span className="status"><i /> AVAILABLE FOR OPPORTUNITIES</span>
@@ -223,7 +213,7 @@ function Portfolio() {
                 <p>My work spans React interfaces, Node.js backends, REST API development, MongoDB and MySQL integration, software testing, debugging and technical support.</p>
                 <p>I&apos;m continuously learning through real projects, with a focus on clear systems, usable experiences and reliable problem solving.</p>
               </div>
-              <div className="contact-actions"><ResumeButton available={resumeAvailable} solid /><a className="portfolio-link" href={GITHUB_URL} {...ext}>GITHUB <ArrowUpRight /></a></div>
+              <div className="contact-actions"><ResumeButton solid /><a className="portfolio-link" href={GITHUB_URL} {...ext}>GITHUB <ArrowUpRight /></a></div>
             </div>
             <div className="orbit" aria-hidden="true" data-reveal><span className="orbit__core">PD</span><i /><i /><i /></div>
           </div>
@@ -255,7 +245,7 @@ function Portfolio() {
           <div className="section-index"><span>05</span><span>EDUCATION & GROWTH</span></div>
           <h2 data-reveal>MY <em>JOURNEY</em><span className="accent-dot">.</span></h2>
           <div className="timeline" data-reveal>
-            {[["BCA", "Bachelor of Computer Applications", "Completed"], ["FULL-STACK DEVELOPMENT", "Learning and building with the MERN stack", "In progress"], ["PROJECT DEVELOPMENT", "Building real-world web applications", "Ongoing"]].map(([title, text, status], index) => (
+              {[["BCA", "Bachelor of Computer Application (BCA) · Ambition College", "2078 – Present · Currently Pursuing"], ["+2", "Ekta Academy", "2077 – 78 · GPA: 2.84"], ["GRADE 10", "Damak Adarsha Boarding School", "2074 – 75 · GPA: 3.05"], ["FULL-STACK DEVELOPMENT", "Learning and building with the MERN stack", "In progress"], ["PROJECT DEVELOPMENT", "Building real-world web applications", "Ongoing"]].map(([title, text, status], index) => (
               <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{text}</p><small>{status}</small></article>
             ))}
           </div>
@@ -282,7 +272,7 @@ function Portfolio() {
                 <a className="portfolio-link portfolio-link--solid" href="mailto:prashantdahal27@gmail.com">EMAIL ME <ArrowUpRight /></a>
                 <a className="portfolio-link" href={GITHUB_URL} {...ext}>GITHUB <ArrowUpRight /></a>
                 <a className="portfolio-link" href={LINKEDIN_URL} {...ext}>LINKEDIN <ArrowUpRight /></a>
-                <ResumeButton available={resumeAvailable} />
+                <ResumeButton />
               </div>
             </div>
             <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={sendMessage}>
