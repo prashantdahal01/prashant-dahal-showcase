@@ -40,12 +40,12 @@ function ResumeButton({ solid }: { solid?: boolean }) {
 const technologies = ["React.js", "JavaScript", "Node.js", "Express.js", "MongoDB", "REST APIs", "Testing"];
 
 const skillGroups = [
-  { label: "Frontend", icon: Code2, skills: ["HTML", "CSS", "JavaScript", "React.js"] },
+  { label: "Frontend", icon: Code2, skills: ["HTML", "CSS", "JavaScript", "React.js", "Vite", "Responsive Design"] },
   { label: "Backend", icon: Server, skills: ["Node.js", "Express.js", "REST APIs"] },
-  { label: "Database", icon: Database, skills: ["MongoDB", "MySQL"] },
+  { label: "Database", icon: Database, skills: ["MongoDB", "Mongoose", "MySQL"] },
   { label: "Development Tools", icon: Terminal, skills: ["Git", "GitHub", "VS Code", "Postman"] },
   { label: "Testing", icon: ShieldCheck, skills: ["Functional Testing", "UI Testing", "API Testing", "Bug Identification", "Debugging"] },
-  { label: "Other", icon: Wrench, skills: ["CMS", "Computer Troubleshooting", "Technical Support", "Documentation"] },
+  { label: "Development", icon: Wrench, skills: ["API Integration", "Full Stack Development", "CMS", "Computer Troubleshooting", "Technical Support", "Documentation"] },
 ];
 
 const services = [
@@ -55,6 +55,8 @@ const services = [
   ["04", "Database Integration", "Connected MongoDB and MySQL data models for real product workflows."],
   ["05", "Software Testing", "Functional, UI and API checks that help find issues before release."],
   ["06", "Technical Support", "Troubleshooting, documentation and practical IT problem solving."],
+  ["07", "UI / Responsive Design", "Clear interfaces that adapt across phones, tablets and large screens."],
+  ["08", "Software Development", "Small, focused systems shaped around useful workflows and real needs."],
 ];
 
 const professionalRoles = [
@@ -79,7 +81,9 @@ function Portfolio() {
 
   useEffect(() => {
     document.documentElement.classList.add("js-enabled");
-    const timer = window.setTimeout(() => setLoading(false), 1450);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = reducedMotion ? undefined : window.setTimeout(() => setLoading(false), 1900);
+    if (reducedMotion) setLoading(false);
 
     const moveCursor = (event: PointerEvent) => {
       if (cursorRef.current) {
@@ -100,12 +104,14 @@ function Portfolio() {
     window.addEventListener("scroll", moveHeroBackdrop, { passive: true });
     return () => {
       document.documentElement.classList.remove("js-enabled");
-      window.clearTimeout(timer);
+      if (timer) window.clearTimeout(timer);
       cancelAnimationFrame(frame);
       window.removeEventListener("pointermove", moveCursor);
       window.removeEventListener("scroll", moveHeroBackdrop);
     };
   }, []);
+
+  const skipIntro = () => setLoading(false);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -155,9 +161,14 @@ function Portfolio() {
     <div className="portfolio-shell">
       <a href="#main" className="skip-link">Skip to content</a>
       <div className={`loader ${loading ? "" : "loader--hidden"}`} aria-hidden={!loading}>
-        <div className="loader__mark">PD<span>.</span></div>
-        <div className="loader__line"><span /></div>
-        <p>FULL-STACK DEVELOPER · NEPAL</p>
+        <div className="loader__grid" aria-hidden="true" />
+        <div className="loader__content">
+          <p className="loader__eyebrow">PRASHANT DAHAL / PORTFOLIO</p>
+          <div className="loader__name"><span>PRASHANT</span><span>DAHAL<i>.</i></span></div>
+          <div className="loader__line"><span /></div>
+          <p className="loader__caption">FULL-STACK DEVELOPER · NEPAL</p>
+        </div>
+        <button className="loader__skip" type="button" onClick={skipIntro}>SKIP INTRO <ArrowUpRight size={14} /></button>
       </div>
 
       <div ref={cursorRef} className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
@@ -165,7 +176,7 @@ function Portfolio() {
       <header className="site-header">
         <PortfolioButton className="wordmark" tone="ghost" onClick={() => navigateTo("top")} aria-label="Go to top">PRASHANT DAHAL<span>.</span></PortfolioButton>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          {[["ABOUT", "about"], ["WORK", "work"], ["SERVICES", "services"], ["SKILLS", "skills"], ["CONTACT", "contact"]].map(([label, id]) => (
+          {[["HOME", "top"], ["ABOUT", "about"], ["SKILLS", "skills"], ["PROJECTS", "work"], ["EXPERIENCE", "experience"], ["CONTACT", "contact"]].map(([label, id]) => (
             <PortfolioButton key={id} tone="ghost" onClick={() => id && navigateTo(id)}>{label}</PortfolioButton>
           ))}
           <PortfolioButton tone="ghost" onClick={() => setMenuOpen(true)} aria-label="Open menu">
@@ -181,7 +192,7 @@ function Portfolio() {
         <PortfolioButton className="menu-close" tone="ghost" onClick={() => setMenuOpen(false)} aria-label="Close menu"><X /></PortfolioButton>
         <p className="eyebrow">NAVIGATION / 2026</p>
         <nav aria-label="Mobile navigation">
-          {[["01", "ABOUT", "about"], ["02", "WORK", "work"], ["03", "SERVICES", "services"], ["04", "SKILLS", "skills"], ["05", "CONTACT", "contact"]].map(([number, label, id]) => (
+          {[["01", "HOME", "top"], ["02", "ABOUT", "about"], ["03", "SKILLS", "skills"], ["04", "PROJECTS", "work"], ["05", "EXPERIENCE", "experience"], ["06", "CONTACT", "contact"]].map(([number, label, id]) => (
             <PortfolioButton key={id} tone="ghost" onClick={() => id && navigateTo(id)}><span>{number}</span>{label}<ArrowUpRight /></PortfolioButton>
           ))}
         </nav>
@@ -247,7 +258,7 @@ function Portfolio() {
           <div className="services-grid">{services.map(([number, title, text]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
         </section>
 
-        <section className="section journey-section">
+        <section id="experience" className="section journey-section">
           <div className="section-index"><span>05</span><span>EDUCATION & GROWTH</span></div>
           <h2 data-reveal>MY <em>JOURNEY</em><span className="accent-dot">.</span></h2>
           <div className="timeline" data-reveal>
