@@ -7,20 +7,18 @@ import portfolioImage from "../assets/portfolio-editorial.jpg";
 import { PortfolioButton } from "../components/PortfolioButton";
 
 const description =
-  "Portfolio of Prashant Dahal, a BCA graduate and junior full-stack developer from Nepal focused on React, Node.js, APIs, databases, testing and technical support.";
+  "Portfolio of Prashant Dahal, a full-stack developer from Nepal building modern web applications with React, Node.js, Express and MongoDB.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Prashant Dahal — Software & Web Developer" },
+      { title: "Prashant Dahal — Full-Stack Developer" },
       { name: "description", content: description },
-      { property: "og:title", content: "Prashant Dahal — Software & Web Developer" },
+      { property: "og:title", content: "Prashant Dahal — Full-Stack Developer" },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://www.prashant-dahal.com.np/" },
-      { property: "og:image", content: "https://www.prashant-dahal.com.np/profile-favicon.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: "https://www.prashant-dahal.com.np/profile-favicon.png" },
     ],
     links: [{ rel: "canonical", href: "https://www.prashant-dahal.com.np/" }],
   }),
@@ -32,7 +30,6 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/prashant-dahal-ba7564234/";
 const EMAIL = "prashantdahal27@gmail.com";
 const RESUME_PATH = "/assets/Prashant_Dahal_CV.pdf";
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xrpbkbwk";
-const PHONE = "Phone available on request";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
 function ResumeButton({ solid }: { solid?: boolean }) {
@@ -61,76 +58,22 @@ const services = [
   ["08", "Software Development", "Small, focused systems shaped around useful workflows and real needs."],
 ];
 
-const professionalRoles = [
-  "Full Stack Developer", "Web Developer", "Front-End Developer", "Back-End Developer",
-  "Software Developer", "IT Support / Technical Support", "QA / Software Testing", "MERN Stack Developer",
-];
-
-const capabilities = [
-  ["01", "Full-Stack Development", "Building complete web applications from frontend to backend."],
-  ["02", "Frontend Development", "Creating responsive and interactive interfaces using React and modern JavaScript."],
-  ["03", "Backend Development", "Building REST APIs, authentication, business logic and database systems."],
-  ["04", "UI / Web Experience", "Creating clean, usable and modern interfaces."],
-  ["05", "Problem Solving", "Designing practical technical solutions for real-world problems."],
-];
-
 function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const heroBackdropRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
-    document.documentElement.classList.add("js-enabled");
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const introSeen = window.sessionStorage.getItem("pd-intro-seen") === "true";
-    const finishIntro = () => {
-      window.sessionStorage.setItem("pd-intro-seen", "true");
-      setLoading(false);
-    };
-    const timer = reducedMotion || introSeen ? undefined : window.setTimeout(finishIntro, 1900);
-    if (reducedMotion || introSeen) setLoading(false);
-
-    const moveCursor = (event: PointerEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
-      }
-    };
-    let frame = 0;
-    const moveHeroBackdrop = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        if (heroBackdropRef.current) {
-          const offset = Math.min(window.scrollY * 0.16, 150);
-          heroBackdropRef.current.style.transform = `translate3d(0, ${offset}px, 0) scale(1.08)`;
-        }
-      });
-    };
-    window.addEventListener("pointermove", moveCursor);
-    window.addEventListener("scroll", moveHeroBackdrop, { passive: true });
-    return () => {
-      document.documentElement.classList.remove("js-enabled");
-      if (timer) window.clearTimeout(timer);
-      cancelAnimationFrame(frame);
-      window.removeEventListener("pointermove", moveCursor);
-      window.removeEventListener("scroll", moveHeroBackdrop);
-    };
-  }, []);
-
-  const skipIntro = () => {
-    window.sessionStorage.setItem("pd-intro-seen", "true");
-    setLoading(false);
-  };
-
-  useEffect(() => {
+    const dialog = menuRef.current;
+    if (menuOpen && dialog && !dialog.open) dialog.showModal();
+    if (!menuOpen && dialog?.open) dialog.close();
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
   const navigateTo = (id: string) => {
     setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(id)?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
   };
 
   const sendMessage = async (event: FormEvent<HTMLFormElement>) => {
@@ -170,35 +113,20 @@ function Portfolio() {
   return (
     <div className="portfolio-shell">
       <a href="#main" className="skip-link">Skip to content</a>
-      <div className={`loader ${loading ? "" : "loader--hidden"}`} aria-hidden={!loading}>
-        <div className="loader__grid" aria-hidden="true" />
-        <div className="loader__content">
-          <p className="loader__eyebrow">PRASHANT DAHAL / PORTFOLIO</p>
-          <div className="loader__name"><span>PRASHANT</span><span>DAHAL<i>.</i></span></div>
-          <div className="loader__line"><span /></div>
-          <p className="loader__caption">FULL-STACK DEVELOPER · NEPAL</p>
-        </div>
-        <button className="loader__skip" type="button" onClick={skipIntro}>SKIP INTRO <ArrowUpRight size={14} /></button>
-      </div>
-
-      <div ref={cursorRef} className="custom-cursor" aria-hidden="true"><span>VIEW</span></div>
-
       <header className="site-header">
         <PortfolioButton className="wordmark" tone="ghost" onClick={() => navigateTo("top")} aria-label="Go to top">PRASHANT DAHAL<span>.</span></PortfolioButton>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          {[["HOME", "top"], ["ABOUT", "about"], ["SKILLS", "skills"], ["PROJECTS", "work"], ["EXPERIENCE", "experience"], ["CONTACT", "contact"]].map(([label, id]) => (
+          {[["WORK", "work"], ["ABOUT", "about"], ["SKILLS", "skills"], ["CONTACT", "contact"]].map(([label, id]) => (
             <PortfolioButton key={id} tone="ghost" onClick={() => id && navigateTo(id)}>{label}</PortfolioButton>
           ))}
-          <PortfolioButton tone="ghost" onClick={() => setMenuOpen(true)} aria-label="Open menu">
-            MENU <Menu size={15} strokeWidth={1.5} />
-          </PortfolioButton>
+          <ResumeButton />
         </nav>
         <PortfolioButton className="mobile-menu-button" tone="ghost" onClick={() => setMenuOpen(true)} aria-label="Open menu">
           <Menu size={20} />
         </PortfolioButton>
       </header>
 
-      <div className={`menu-overlay ${menuOpen ? "menu-overlay--open" : ""}`} aria-hidden={!menuOpen}>
+      <dialog ref={menuRef} className="menu-overlay" aria-label="Site navigation" onCancel={() => setMenuOpen(false)} onClose={() => setMenuOpen(false)}>
         <PortfolioButton className="menu-close" tone="ghost" onClick={() => setMenuOpen(false)} aria-label="Close menu"><X /></PortfolioButton>
         <p className="eyebrow">NAVIGATION / 2026</p>
         <nav aria-label="Mobile navigation">
@@ -206,11 +134,11 @@ function Portfolio() {
             <PortfolioButton key={id} tone="ghost" onClick={() => id && navigateTo(id)}><span>{number}</span>{label}<ArrowUpRight /></PortfolioButton>
           ))}
         </nav>
-      </div>
+      </dialog>
 
       <main id="main">
         <section id="top" className="hero" aria-labelledby="hero-title">
-          <div ref={heroBackdropRef} className="hero__backdrop" aria-hidden="true" style={{ backgroundImage: `url(${portfolioImage})` }} />
+          <img className="hero__backdrop" src={portfolioImage} alt="" aria-hidden="true" fetchPriority="high" />
           <div className="hero__kicker"><span>PORTFOLIO / 2026</span><span>FULL-STACK DEVELOPMENT</span></div>
           <h1 id="hero-title" className="hero__title">
             <span className="hero-line">PRASHANT</span>
@@ -219,8 +147,8 @@ function Portfolio() {
           <div className="hero__lower">
             <div className="hero__role"><span>FULL-STACK DEVELOPER</span><small>WEB · SOFTWARE · MERN</small></div>
             <div className="hero__intro">
-              <p>I build modern web applications and solve practical technical problems across front-end, back-end, databases, APIs, testing and support.</p>
-              <div className="hero__roles" aria-label="Professional focus areas">{professionalRoles.slice(0, 3).map((role) => <span key={role}>{role}</span>)}</div>
+              <p>I build modern web applications with clean interfaces, practical functionality, and reliable backend systems.</p>
+              <div className="hero__roles" aria-label="Core technologies"><span>REACT</span><span>NODE.JS</span><span>MONGODB</span></div>
             </div>
             <div className="hero__cta"><PortfolioButton tone="solid" onClick={() => navigateTo("work")}>VIEW PROJECTS <ArrowUpRight size={15} /></PortfolioButton><ResumeButton /><PortfolioButton tone="ghost" onClick={() => navigateTo("contact")}>CONTACT ME <ArrowUpRight size={15} /></PortfolioButton></div>
           </div>
@@ -242,7 +170,6 @@ function Portfolio() {
               </div>
               <div className="contact-actions"><ResumeButton solid /><a className="portfolio-link" href={GITHUB_URL} {...ext}>GITHUB <ArrowUpRight /></a></div>
             </div>
-            <div className="orbit" aria-hidden="true" data-reveal><span className="orbit__core">PD</span><i /><i /><i /></div>
           </div>
         </section>
 
@@ -259,12 +186,12 @@ function Portfolio() {
           <div className="section-index"><span>03</span><span>FEATURED PROJECTS</span></div>
           <div className="section-heading" data-reveal><h2>SELECTED<br /><em>WORK</em><span className="accent-dot">.</span></h2><p>Real projects. Thoughtful systems.<br />Built to solve practical problems.</p></div>
           <Project number="01" title="BUS BOOKING SYSTEM" category="FULL-STACK WEB APPLICATION" description="A MERN-based bus ticket booking platform designed for customers, operators and administrators. Includes route and schedule search, seat selection, temporary seat locking, booking management, online payment flow and e-ticket generation." technologies={["React.js", "Node.js", "Express.js", "MongoDB"]} features={["Booking and seat management", "Route and schedule management", "Payment integration", "Admin dashboard"]} liveUrl="https://smartbusbooking-1.onrender.com/" repoUrl="https://github.com/prashantdahal01/smartbusbooking" image={busImage} alt="Abstract map, bus and seat layout artwork representing a bus booking platform" />
-          <Project number="02" title="PERSONAL PORTFOLIO" category="WEB DEVELOPMENT" description="A modern personal portfolio designed to showcase my development work, technical skills and projects through an interactive user experience." technologies={["React", "JavaScript", "CSS", "Vite"]} features={["Responsive editorial layout", "Accessible contact form", "Project showcase"]} image={portfolioImage} alt="Abstract browser and typographic artwork representing a creative developer portfolio" reverse />
+          <Project number="02" title="PERSONAL PORTFOLIO" category="WEB DEVELOPMENT" description="A modern personal portfolio designed to showcase my development work, technical skills and projects through an interactive user experience." technologies={["React", "JavaScript", "CSS", "Vite"]} features={["Responsive editorial layout", "Accessible contact form", "Project showcase"]} liveUrl="https://prashant-dahal-showcase.lovable.app/" image={portfolioImage} alt="Abstract browser and typographic artwork representing a creative developer portfolio" reverse />
         </section>
 
         <section id="services" className="section services-section">
           <div className="section-index"><span>04</span><span>SERVICES / FOCUS</span></div>
-          <div className="section-heading"><h2>WHAT I<br /><em>CAN DO</em><span className="accent-dot">.</span></h2><p>Junior-friendly, practical support across the product lifecycle — from first interface to testing and troubleshooting.</p></div>
+          <div className="section-heading"><h2>WHAT I<br /><em>CAN DO</em><span className="accent-dot">.</span></h2><p>From the first interface to API integration, testing and technical support.</p></div>
           <div className="services-grid">{services.map(([number, title, text]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div>
         </section>
 
@@ -293,7 +220,6 @@ function Portfolio() {
           <div className="contact-grid" data-reveal>
             <div className="contact-details">
               <div><span>EMAIL</span><a href="mailto:prashantdahal27@gmail.com">prashantdahal27@gmail.com <ArrowUpRight /></a></div>
-              <div><span>PHONE</span><p>{PHONE}</p></div>
               <div><span>LOCATION</span><p>Nepal</p></div>
               <div className="contact-actions">
                 <a className="portfolio-link portfolio-link--solid" href="mailto:prashantdahal27@gmail.com">EMAIL ME <ArrowUpRight /></a>
@@ -302,7 +228,7 @@ function Portfolio() {
                 <ResumeButton />
               </div>
             </div>
-            <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={sendMessage}>
+            <form action={FORMSPREE_ENDPOINT} method="POST" onSubmit={sendMessage} onChange={() => { if (formState !== "sending") setFormState("idle"); }}>
               <label><span>YOUR NAME</span><input name="name" type="text" autoComplete="name" placeholder="Enter your name" required /></label>
               <label><span>YOUR EMAIL</span><input name="email" type="email" autoComplete="email" placeholder="Enter your email" required /></label>
               <label><span>YOUR MESSAGE</span><textarea name="message" rows={4} placeholder="Tell me about your idea" required /></label>
@@ -333,7 +259,7 @@ function Project({ number, title, category, description, technologies, features,
         <h3>{title}</h3><p>{description}</p>
         <ul aria-label="Technologies used">{technologies.map((technology) => <li key={technology}>{technology}</li>)}</ul>
         <ul className="project__features" aria-label="Key features">{features.map((feature) => <li key={feature}>{feature}</li>)}</ul>
-        <div className="project__actions">{liveUrl ? <a className="portfolio-link portfolio-link--solid" href={liveUrl} aria-label={`View live demo for ${title}`} {...ext}>VIEW PROJECT <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">VIEW PROJECT</span>}{repoUrl ? <a className="portfolio-link" href={repoUrl} aria-label={`View GitHub repository for ${title}`} {...ext}>GITHUB <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">GITHUB</span>}{!liveUrl && !repoUrl && <small className="project__soon">Live demo &amp; repo coming soon</small>}</div>
+        <div className="project__actions">{liveUrl ? <a className="portfolio-link portfolio-link--solid" href={liveUrl} aria-label={`View live demo for ${title}`} {...ext}>VIEW PROJECT <ArrowUpRight /></a> : <span className="portfolio-link portfolio-link--disabled" aria-disabled="true">VIEW PROJECT</span>}{repoUrl ? <a className="portfolio-link" href={repoUrl} aria-label={`View GitHub repository for ${title}`} {...ext}>GITHUB <ArrowUpRight /></a> : null}{!liveUrl && !repoUrl && <small className="project__soon">Live demo &amp; repo coming soon</small>}</div>
       </div>
     </article>
   );

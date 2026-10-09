@@ -6,7 +6,6 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [
     tanstackStart({
-      customViteLogger: true,
       server: { entry: "server" },
     }),
     react(),
