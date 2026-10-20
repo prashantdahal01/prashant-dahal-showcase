@@ -99,6 +99,12 @@ button { color: inherit; }
 .hero__footer button { display: flex; min-height: auto; padding: 0; gap: .5rem; align-items: center; border: 0; background: transparent; color: var(--foreground); font: inherit; cursor: pointer; animation: float 1.8s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(.35rem); } }
 
+.loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--background); }
+.loader--leaving { opacity: 0; visibility: hidden; transition: opacity .55s ease, visibility .55s; }
+.loader__mark { margin: 0; font-family: var(--font-display); font-size: clamp(4.5rem, 14vw, 10rem); line-height: 1; animation: loader-pop .9s cubic-bezier(.2,.75,.25,1) both; }
+.loader__mark span { color: var(--primary); }
+@keyframes loader-pop { from { opacity: 0; transform: translateY(.35em) scale(.96); } to { opacity: 1; transform: none; } }
+
 .section { padding: clamp(6rem, 12vw, 12rem) clamp(1.25rem, 3vw, 3.5rem); border-top: 1px solid var(--border); }
 .section-index { padding-bottom: clamp(3rem, 7vw, 7rem); color: var(--muted-foreground); }
 .section-index span:last-child { color: var(--foreground); }
