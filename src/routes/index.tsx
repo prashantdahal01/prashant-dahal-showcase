@@ -58,10 +58,25 @@ const services = [
   ["08", "Software Development", "Small, focused systems shaped around useful workflows and real needs."],
 ];
 
+function Loader({ leaving }: { leaving: boolean }) {
+  return (
+    <div className={`loader ${leaving ? "loader--leaving" : ""}`} aria-hidden="true">
+      <p className="loader__mark">PD<span>.</span></p>
+    </div>
+  );
+}
+
 function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [loaderState, setLoaderState] = useState<"visible" | "leaving" | "gone">("visible");
   const menuRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const leaveTimer = window.setTimeout(() => setLoaderState("leaving"), 1400);
+    const goneTimer = window.setTimeout(() => setLoaderState("gone"), 2000);
+    return () => { window.clearTimeout(leaveTimer); window.clearTimeout(goneTimer); };
+  }, []);
 
   useEffect(() => {
     const dialog = menuRef.current;
@@ -112,6 +127,7 @@ function Portfolio() {
 
   return (
     <div className="portfolio-shell">
+      {loaderState !== "gone" && <Loader leaving={loaderState === "leaving"} />}
       <a href="#main" className="skip-link">Skip to content</a>
       <header className="site-header">
         <PortfolioButton className="wordmark" tone="ghost" onClick={() => navigateTo("top")} aria-label="Go to top">PRASHANT DAHAL<span>.</span></PortfolioButton>
