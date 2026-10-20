@@ -99,9 +99,10 @@ button { color: inherit; }
 .hero__footer button { display: flex; min-height: auto; padding: 0; gap: .5rem; align-items: center; border: 0; background: transparent; color: var(--foreground); font: inherit; cursor: pointer; animation: float 1.8s ease-in-out infinite; }
 @keyframes float { 50% { transform: translateY(.35rem); } }
 
-.loader { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: var(--background); }
-.loader--leaving { opacity: 0; visibility: hidden; transition: opacity .55s ease, visibility .55s; }
-.loader__mark { margin: 0; font-family: var(--font-display); font-size: clamp(4.5rem, 14vw, 10rem); line-height: 1; animation: loader-pop .9s cubic-bezier(.2,.75,.25,1) both; }
+.loader { position: fixed; inset: 0; width: 100%; height: 100vh; height: 100dvh; z-index: 100; display: grid; place-items: center; padding: 1rem; overflow: hidden; background: var(--background); transform: translateY(0); will-change: transform; }
+.loader--leaving { transform: translateY(-100%); transition: transform .65s cubic-bezier(.76,0,.24,1); }
+.loader__mark { margin: 0; max-width: 100%; text-align: center; font-family: var(--font-display); font-size: clamp(3.5rem, 22vw, 10rem); line-height: 1; white-space: nowrap; animation: loader-pop .9s cubic-bezier(.2,.75,.25,1) both; }
+.loader--leaving .loader__mark { transform: translateY(-30%); opacity: 0; transition: transform .65s cubic-bezier(.76,0,.24,1), opacity .4s ease; }
 .loader__mark span { color: var(--primary); }
 @keyframes loader-pop { from { opacity: 0; transform: translateY(.35em) scale(.96); } to { opacity: 1; transform: none; } }
 
@@ -231,11 +232,6 @@ footer p { color: var(--muted-foreground); }
 }
 
 @media (max-width: 480px) {
-  .loader__content { width: calc(100% - 2rem); }
-  .loader__name { margin-block: 2rem 1.5rem; font-size: 1rem; }
-  .loader__name span:last-child { padding-left: 12vw; }
-  .loader__eyebrow, .loader__caption, .loader__skip { font-size: .55rem; }
-  .loader__skip { right: 1rem; bottom: 1.25rem; }
   .site-header { height: 4.5rem; padding-inline: 1rem; }
   .wordmark { max-width: calc(100vw - 5rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; }
   .menu-overlay { padding: 1.5rem 1.25rem; }
